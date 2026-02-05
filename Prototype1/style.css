@@ -5,9 +5,11 @@ h1{
 }
 
 .webgl {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
+    width: 100vw;
+    height: 100vh;
     outline: none;
     z-index: -1;
 }

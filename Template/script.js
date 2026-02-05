@@ -49,6 +49,7 @@ const animation = () =>
 
     // Renderer
     renderer.render(scene, camera)
+    
     //Request next frame 
     window.requestAnimationFrame(animation)
 }
