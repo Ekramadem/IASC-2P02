@@ -1,6 +1,6 @@
 body {
-    background-color: rgb(176, 153, 104);
-    color: white;
+    background-color: #E6D9F2;
+    color: #4B2E6F;
     width: fit-content;
     margin: 0 auto;
     text-align:left;
@@ -20,7 +20,7 @@ li{
 }
 
 a {
-    color:  rgb(92, 51, 21);
+    color: white;
     text-decoration: none;
 }
 
