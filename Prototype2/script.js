@@ -48,12 +48,12 @@ controls.enableDamping = true
  ** MESHES **
  ************/
 
-// testSphere
-const sphereGeometry =  new THREE.SphereGeometry(1)
-const sphereMaterial = new THREE.MeshNormalMaterial()
-const testSphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+// Torus Shape 
+const geometry = new THREE.TorusGeometry( 1.5, 0.5, 16, 100 );
+const material = new THREE.MeshBasicMaterial( { color: 0x6A0572 } );
+const torus = new THREE.Mesh( geometry, material );
 
-scene.add(testSphere)
+scene.add( torus );
 
 // Plane
 const planeGeometry = new THREE.PlaneGeometry(10, 10, 50, 50)
@@ -76,7 +76,8 @@ const ui = new dat.GUI()
 // UI Object
 const uiObject = {
     speed: 1,
-    distance: 1
+    distance: 0.1,
+    rotationSpeed: 1
 
 }
 
@@ -87,22 +88,22 @@ planeFolder
     .add(planeMaterial, "wireframe")
     .name("Toggle wireframe")
 
-// testSphere UI
-const sphereFolder = ui.addFolder( "Sphere" )
+    // torus UI
+const torusFolder = ui.addFolder( "Torus" )
 
- sphereFolder
-    .add(uiObject, "speed")
-    .min(0.1)
-    .max(10)
-    .step(0.1)
-    .name ("Speed")
+torusFolder
+   .add(uiObject, "speed")
+   .min(0.1)
+   .max(10)
+   .step(0.1)
+   .name ("Rotation Speed")
 
-sphereFolder
-    .add(uiObject, "distance")
-    .min(0.1)
-    .max(10)
-    .step(0.1)
-    .name("Distance")
+   torusFolder
+   .add(uiObject, "distance")
+   .min(0.1)
+   .max(10)
+   .step(0.1)
+   .name("Distance")
     
  /******************
   ** ANIMATION LOOP**
@@ -113,10 +114,11 @@ const animation = () =>
 {
     // Return elapsedTime
     const elapsedTime = clock.getElapsedTime()
-    console.log(elapsedTime)
 
-    // Animate Sphere
-    testSphere.position.y = Math.sin(elapsedTime * uiObject.speed) * uiObject.distance
+    // Animate torus
+    torus.position.y = Math.sin(elapsedTime * uiObject.speed) * uiObject.distance
+         torus.rotation.x += 0.01 * uiObject.speed
+        torus.rotation.y += 0.015 * uiObject.speed
 
     // Update OrbitControls
     controls.update()
