@@ -32,10 +32,10 @@ h1{
 }
 
 .clickable {
-    color: aqua;
+    color: rgb(219, 170, 241);
     cursor: grab;
 }
 
 .clickable:hover {
-    color: orange;
+    color: violet;
 }

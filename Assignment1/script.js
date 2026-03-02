@@ -21,7 +21,7 @@ const sizes = {
 
  // Scene
 const scene = new THREE.Scene()
-//scene.background = new THREE.Color("black")
+scene.background = new THREE.Color("black")
 
  //Camera
 const camera = new THREE.PerspectiveCamera(
@@ -54,7 +54,7 @@ controls.enableDamping = true
  // Cave 
  const caveGeometry = new THREE.PlaneGeometry(15.5, 7.5)
  const caveMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color("white"),
+    color: new THREE.Color("#E6D9F2"),
     side: THREE.DoubleSide
  })
 const cave = new THREE.Mesh(caveGeometry, caveMaterial)
@@ -62,56 +62,29 @@ cave.rotation.y = Math.PI *0.5
 cave.receiveShadow = true
 scene.add(cave)
 
-// Objects
-const torusKnotGeometry = new THREE.TorusKnotGeometry(1, 0.2)
-const  torusKnotMaterial = new THREE.MeshNormalMaterial()
-const torusKnot = new THREE.Mesh(torusKnotGeometry, torusKnotMaterial)
-torusKnot.position.set(15, 2.5, 0)
-torusKnot.castShadow = true
-scene.add(torusKnot)
+// Object 1 (Box A)
+const boxAGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5)
+const boxAMaterial = new THREE.MeshStandardMaterial({
+   color: "purple"
+})
+const boxA = new THREE.Mesh(boxAGeometry, boxAMaterial)
+boxA.position.set(15, 2, -0.5)
+boxA.castShadow = true
+scene.add(boxA)
 
-/** 
-// Mouth
-const mouthGeometry = new THREE.TorusGeometry( 2, 0.3, 16, 100, Math.PI )
-const mouthMaterial = new THREE.MeshNormalMaterial()
-const mouth = new THREE.Mesh( mouthGeometry, mouthMaterial )
-scene.add(mouth)
-
-mouth.position.set(6, 0.5, 0)
-mouth.castShadow = true
-
-mouth.rotation.x = Math.PI
-mouth.rotation.y = Math.PI * 0.5
-//mouth.rotation.z = Math.PI * 0.5
-
-// Eye 1
-const eyeGeometry = new THREE.CapsuleGeometry(0.6, 0, 32, 8, -1)
-const eyeMaterial = new THREE.MeshNormalMaterial()
-const eye = new THREE.Mesh( eyeGeometry, eyeMaterial )
-scene.add( eye )
-
-eye.position.set(6, 2, -1)
-eye.castShadow = true
-
-// Eye 2
-const eye2Geometry = new THREE.CapsuleGeometry(0.6, 0, 32, 8, 1)
-const eye2Material = new THREE.MeshNormalMaterial()
-const eye2 = new THREE.Mesh( eye2Geometry, eye2Material )
-scene.add( eye2 );
-
-eye2.position.set(6, 2, 1);
-eye2.castShadow = true
-**/
+// Object 2 (Box B)
+const boxBGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5)
+const boxBMaterial = new THREE.MeshStandardMaterial({
+   color: "blue"
+})
+const boxB = new THREE.Mesh(boxBGeometry, boxBMaterial)
+boxB.position.set(15, 2, 0.5)
+boxB.castShadow = true
+scene.add(boxB)
 
  /***********
   ** LIGHTS **
   ***********/
-    // Ambient Light
-    //const ambientLight = new THREE.AmbientLight(0x404040)
-    //const ambientLight = new THREE.AmbientLight(
-    //    new THREE.Color("white")
-    //)
-    //scene.add(ambientLight)
 
 // Directional Light
  const directionalLight = new THREE.DirectionalLight(
@@ -119,6 +92,7 @@ eye2.castShadow = true
     0.5
  )
 scene.add(directionalLight)
+directionalLight.intensity = 1
 directionalLight.position.set(20, 4.1, 0)
 directionalLight.target = cave
 directionalLight.castShadow = true
@@ -173,26 +147,6 @@ document.querySelector('#part-two').onclick = function () {
 /**********
  ** UI **
  *********/
-// UI
-/*
-const ui = new dat.GUI()
-
-const lightPositionFolder = ui.addFolder("Light Position")
-
-lightPositionFolder
-    .add(directionalLight.position, "y")
-    .min(-10)
-    .max(10)
-    .step(0.1)
-    .name("Y")
-
- lightPositionFolder
-    .add(directionalLight.position, "z")
-    .min(-10)
-    .max(10)
-    .step(0.1)
-    .name("Z")
- */
 
  /******************
   ** ANIMATION LOOP**
@@ -220,30 +174,35 @@ if(domObject.part === 2)
       camera.lookAt(0, 0, 0)
    }
 
-   // first-change
+   // first-change (merge wider)
    if(domObject.firstChange)
    {
-      torusKnot.rotation.x = elapsedTime
+      boxB.position.z += (0 - boxB.position.z) *0.05
    }
 
-   //second-change
+   //second-change (stretch upwards)
 if(domObject.secondChange)
    {
-      torusKnot.rotation.y = elapsedTime
+      boxB.position.y += (2.5 - boxB.position.y) *0.05
    }
 
-   //third-change
+   //third-change (seperate objects)
    if(domObject.thirdChange)
    {
-      torusKnot.position.y = (Math.sin(elapsedTime) +1) *2
+      boxB.position.z += (3 - boxB.position.z) *0.05
+      boxB.position.y += (2 - boxB.position.y) *0.05
+      boxB.position.z += (3 - boxB.position.z) *0.05
    }
 
-   //fourth-change
+   //fourth-change (merge objects again)
    if(domObject.fourthChange)
    {
-      torusKnot.position.z = Math.sin(elapsedTime)
-   }
-
+     boxA.position.z += (0 - boxA.position.z) *0.1
+     boxB.position.z += (0 - boxB.position.z) *0.1
+     boxA.position.y += (2 - boxA.position.y) *0.05
+     boxB.position.y += (2 - boxB.position.y) *0.05
+ }
+   
     // Update OrbitControls
     controls.update()
 
